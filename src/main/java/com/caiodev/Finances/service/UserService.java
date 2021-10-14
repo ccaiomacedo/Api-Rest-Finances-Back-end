@@ -8,5 +8,5 @@ public interface UserService {
 
     User salvarUsuario(User usuario);
 
-    void validadarEmail(String email);
+    void validarEmail(String email);
 }
