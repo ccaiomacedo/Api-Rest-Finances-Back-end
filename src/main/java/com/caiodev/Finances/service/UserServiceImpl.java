@@ -4,6 +4,7 @@ import com.caiodev.Finances.entity.User;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service //diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
 public class UserServiceImpl implements UserService{
@@ -20,8 +21,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public User salvarUsuario(User usuario) {
-        return null;
+        validarEmail(usuario.getEmail());
+        return repository.save(usuario);
     }
 
     @Override
