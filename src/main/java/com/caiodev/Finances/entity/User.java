@@ -4,8 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name="usuario",schema="myFinances")
+@Table(name = "usuario")
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -13,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class User {
 
     @Id

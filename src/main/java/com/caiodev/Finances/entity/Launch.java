@@ -2,17 +2,21 @@ package com.caiodev.Finances.entity;
 
 import com.caiodev.Finances.enums.LaunchStatus;
 import com.caiodev.Finances.enums.LaunchType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
-@Table(name="lancamento",schema="financas")
+
 @Data //anotação lombok que substitui as outras
 @Builder
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Launch {
 
     @Id
