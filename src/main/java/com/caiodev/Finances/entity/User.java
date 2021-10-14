@@ -3,7 +3,6 @@ package com.caiodev.Finances.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name="usuario",schema="myFinances")
