@@ -1,10 +1,13 @@
 package com.caiodev.Finances.service;
 
 import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service //diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
 public class UserServiceImpl implements UserService{
@@ -17,7 +20,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User autenticar(String email, String senha) {
-        return null;
+        Optional<User> user=repository.findByEmail(email);
+        if(!user.isPresent()){
+            throw new AuthenticationErrorException("Usuário não encontrado para o email informado.");
+        }
+        if(!user.get().getSenha().equals(senha)){
+            throw new AuthenticationErrorException("senha inválida");
+        }
+        return user.get();
     }
 
     @Override
