@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(SpringExtension.class)//pra criar um contexto de injeção de  dependências
 @ActiveProfiles("test")
 @DataJpaTest//ela deleta os dados quando encerra o teste
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
