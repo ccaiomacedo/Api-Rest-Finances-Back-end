@@ -2,6 +2,7 @@ package com.caiodev.Finances.resource;
 
 import com.caiodev.Finances.dto.UserDTO;
 import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,16 @@ public class UserResource {
 
     public UserResource(UserService service) {
         this.service = service;
+    }
+
+    @PostMapping("/autenticar")
+    public ResponseEntity autenticar(@RequestBody UserDTO dto){
+        try{
+            User usuarioAutenticado = service.autenticar(dto.getEmail(), dto.getSenha());
+            return ResponseEntity.ok(usuarioAutenticado);//esse ok é pra dizer que o retorno http vai ser 200
+        }catch(AuthenticationErrorException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping
