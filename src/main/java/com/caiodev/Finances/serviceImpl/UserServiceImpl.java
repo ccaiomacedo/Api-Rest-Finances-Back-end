@@ -1,16 +1,17 @@
-package com.caiodev.Finances.service;
+package com.caiodev.Finances.serviceImpl;
 
 import com.caiodev.Finances.entity.User;
 import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.UserRepository;
+import com.caiodev.Finances.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service //diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     //teste
     private UserRepository repository;

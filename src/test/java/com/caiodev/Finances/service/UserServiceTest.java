@@ -5,6 +5,7 @@ import com.caiodev.Finances.entity.User;
 import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.UserRepository;
+import com.caiodev.Finances.serviceImpl.UserServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
