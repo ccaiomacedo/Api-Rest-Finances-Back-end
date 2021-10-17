@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service //diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
 public class UserServiceImpl implements UserService{
 
+    //teste
     private UserRepository repository;
 
     public UserServiceImpl(UserRepository repository) {
