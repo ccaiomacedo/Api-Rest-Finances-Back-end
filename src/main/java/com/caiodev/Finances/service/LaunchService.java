@@ -17,4 +17,5 @@ public interface LaunchService {
 
     void atualizarStatus(Launch lancamento, LaunchStatus status);
 
+    void validar(Launch lancamento);
 }
