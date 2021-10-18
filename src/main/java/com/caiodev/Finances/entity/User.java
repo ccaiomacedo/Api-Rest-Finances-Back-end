@@ -1,5 +1,6 @@
 package com.caiodev.Finances.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class User {
     private String email;
 
     @Column(name="senha")
+    @JsonIgnore
     private String senha;
 
 }
