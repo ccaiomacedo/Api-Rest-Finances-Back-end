@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/lancamentos")
 public class LaunchResource {
@@ -19,8 +22,31 @@ public class LaunchResource {
     private LaunchService service;
     private UserService usuarioService;
 
-    public LaunchResource(LaunchService service){
+    public LaunchResource(LaunchService service,UserService usuarioService){
         this.service = service;
+        this.usuarioService = usuarioService;
+    }
+
+    @GetMapping
+    public ResponseEntity buscar(
+            @RequestParam(value="descricao",required = false) String descricao, // definindo que o parâmetro é opcional
+            @RequestParam(value ="mes",required = false) Integer mes,
+            @RequestParam(value = "ano",required = false)Integer ano,
+            @RequestParam("usuario") Long idUsuario //parâmetro obrigatório
+    ){
+    Launch lancamentoFiltro = new Launch();
+    lancamentoFiltro.setDescricao(descricao);
+    lancamentoFiltro.setMes(mes);
+    lancamentoFiltro.setAno(ano);
+
+    Optional<User> user = usuarioService.obterPorId(idUsuario);
+    if(user.isPresent()){
+        return  ResponseEntity.badRequest().body("Não foi possível realizar a consulta. Usuário não encontrado para o id encontrado");
+    }else{
+        lancamentoFiltro.setUser(user.get());
+    }
+        List<Launch> lancamentos = service.buscar(lancamentoFiltro);
+        return ResponseEntity.ok(lancamentos);
     }
 
     @PostMapping
@@ -54,7 +80,6 @@ public class LaunchResource {
             service.deletar(entidade);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado na base de dados",HttpStatus.BAD_REQUEST));
-
     }
 
 
@@ -76,7 +101,4 @@ public class LaunchResource {
         return launch;
 
     }
-
-
-
 }
