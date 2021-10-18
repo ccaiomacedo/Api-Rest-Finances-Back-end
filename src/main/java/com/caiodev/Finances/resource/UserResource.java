@@ -4,22 +4,25 @@ import com.caiodev.Finances.dto.UserDTO;
 import com.caiodev.Finances.entity.User;
 import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
+import com.caiodev.Finances.service.LaunchService;
 import com.caiodev.Finances.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
 public class UserResource {
 
     private UserService service;
+    private LaunchService launchService;
 
-    public UserResource(UserService service) {
+    public UserResource(UserService service,LaunchService launchService) {
         this.service = service;
+        this.launchService = launchService;
     }
 
     @PostMapping("/autenticar")
@@ -42,4 +45,14 @@ public class UserResource {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/{id}/saldo")
+    public ResponseEntity obterSaldo(@PathVariable("id") Long id){
+        Optional<User> usuario = service.obterPorId(id);
+        if(!usuario.isPresent()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        BigDecimal saldo = launchService.obterSaldoPorUsuario(id);
+        return ResponseEntity.ok(saldo);
+    }
+
 }

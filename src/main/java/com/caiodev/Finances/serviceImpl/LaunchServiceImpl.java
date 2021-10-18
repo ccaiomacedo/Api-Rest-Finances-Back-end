@@ -2,6 +2,7 @@ package com.caiodev.Finances.serviceImpl;
 
 import com.caiodev.Finances.entity.Launch;
 import com.caiodev.Finances.enums.LaunchStatus;
+import com.caiodev.Finances.enums.LaunchType;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.LaunchRepository;
 import com.caiodev.Finances.service.LaunchService;
@@ -33,7 +34,7 @@ public class LaunchServiceImpl implements LaunchService {
     }
 
     @Override
-    @Transactional
+    @Transactional //ele abre uma transação, ai ele executa o conteúdo do metodo e ao final do metodo ele faz um commit e se ocorrer qualquer erro ele faz o rollback
     public Launch atualizar(Launch lancamento) {
         validar(lancamento);
         Objects.requireNonNull(lancamento.getId());//aqui está garantindo que tem que passar um lançamento com id se não vai lançar um nullPointerException
@@ -41,7 +42,7 @@ public class LaunchServiceImpl implements LaunchService {
     }
 
     @Override
-    @Transactional
+    @Transactional //ele abre uma transação, ai ele executa o conteúdo do metodo e ao final do metodo ele faz um commit e se ocorrer qualquer erro ele faz o rollback
     public void deletar(Launch lancamento) {
         Objects.requireNonNull(lancamento.getId());//aqui está garantindo que tem que passar um lançamento com id se não vai lançar um nullPointerException
         repository.delete(lancamento);
@@ -88,5 +89,21 @@ public class LaunchServiceImpl implements LaunchService {
     @Override
     public Optional<Launch> obterPorId(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal obterSaldoPorUsuario(Long id) {
+        BigDecimal receitas = repository.obterSaldoPorTipoLancamentoEUsuario(id, LaunchType.RECEITA);//somatória das receitas
+        BigDecimal despesas = repository.obterSaldoPorTipoLancamentoEUsuario(id, LaunchType.DESPESA);//somatória das despesas
+
+        if(receitas==null){
+            receitas = BigDecimal.ZERO;
+        }
+        if(despesas==null){
+            despesas =BigDecimal.ZERO;
+        }
+
+        return receitas.subtract(despesas);
     }
 }

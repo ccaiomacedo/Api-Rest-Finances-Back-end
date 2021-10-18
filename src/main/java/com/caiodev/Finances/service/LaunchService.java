@@ -3,6 +3,7 @@ package com.caiodev.Finances.service;
 import com.caiodev.Finances.entity.Launch;
 import com.caiodev.Finances.enums.LaunchStatus;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,4 +22,6 @@ public interface LaunchService {
     void validar(Launch lancamento);
 
     Optional<Launch> obterPorId(Long id);
+
+    BigDecimal obterSaldoPorUsuario(Long id);
 }
