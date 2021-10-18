@@ -49,6 +49,6 @@ public class Launch {
 
     @Column(name="status")
     @Enumerated(value = EnumType.STRING) //essa anotação é pra dizer que é um tipo enumerado, e está salvando com string
-    private LaunchStatus Status;
+    private LaunchStatus status;
 
 }
