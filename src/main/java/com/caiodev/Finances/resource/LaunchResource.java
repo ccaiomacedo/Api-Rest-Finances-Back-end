@@ -48,6 +48,16 @@ public class LaunchResource {
         }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado na base de Dados",HttpStatus.BAD_REQUEST));
     }
 
+    @DeleteMapping("{id]")
+    public ResponseEntity deletar(@PathVariable Long id){
+        return service.obterPorId(id).map(entidade ->{
+            service.deletar(entidade);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado na base de dados",HttpStatus.BAD_REQUEST));
+
+    }
+
+
 
     private Launch converter(LaunchDTO dto){
         Launch launch = new Launch();
