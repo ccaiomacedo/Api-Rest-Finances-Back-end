@@ -36,8 +36,8 @@ public class LaunchServiceImpl implements LaunchService {
     @Override
     @Transactional //ele abre uma transação, ai ele executa o conteúdo do metodo e ao final do metodo ele faz um commit e se ocorrer qualquer erro ele faz o rollback
     public Launch atualizar(Launch lancamento) {
+        Objects.requireNonNull(lancamento.getId());//aqui está garantindo que tem que passar um lançamento com id se não vai lançar um nullPointerException, está verificando se esse lancamento que vai atualizar ja possui id
         validar(lancamento);
-        Objects.requireNonNull(lancamento.getId());//aqui está garantindo que tem que passar um lançamento com id se não vai lançar um nullPointerException
         return repository.save(lancamento);
     }
 
@@ -76,7 +76,7 @@ public class LaunchServiceImpl implements LaunchService {
             throw  new BusinessRuleException("Informe um ano válido");
         }
         if(lancamento.getUser()==null || lancamento.getUser().getId()==null){
-            throw  new BusinessRuleException("Informe uma descrição válida");
+            throw  new BusinessRuleException("Informe um usuário");
         }
         if(lancamento.getValor()==null || lancamento.getValor().compareTo(BigDecimal.ZERO)<1){//se o BigDecimal comparado a zero for menor que um vai lançar a exception
             throw  new BusinessRuleException("Informe um valor válido");

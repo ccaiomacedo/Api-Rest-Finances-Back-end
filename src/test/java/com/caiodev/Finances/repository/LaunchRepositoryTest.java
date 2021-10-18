@@ -72,7 +72,7 @@ public class LaunchRepositoryTest {
         Assertions.assertThat(lancamentoEncontrado.isPresent()).isTrue();
     }
 
-    private Launch criarLancamento(){
+    public static Launch criarLancamento(){
         return Launch.builder().ano(2019).mes(1).descricao("lancamento qualquer").valor(BigDecimal.valueOf(10)).tipo(LaunchType.RECEITA).status(LaunchStatus.PENDENTE).dataCadastro(LocalDate.now()).build();
 
     }
