@@ -1,6 +1,5 @@
 package com.caiodev.Finances.dto;
 
-import com.caiodev.Finances.entity.User;
 import lombok.Builder;
 import lombok.Data;
 
