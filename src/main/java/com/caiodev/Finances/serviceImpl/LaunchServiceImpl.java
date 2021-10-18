@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class LaunchServiceImpl implements LaunchService {
@@ -82,5 +83,10 @@ public class LaunchServiceImpl implements LaunchService {
         if(lancamento.getTipo()==null ){
             throw  new BusinessRuleException("Informe um tipo de lançamento");
         }
+    }
+
+    @Override
+    public Optional<Launch> obterPorId(Long id) {
+        return repository.findById(id);
     }
 }

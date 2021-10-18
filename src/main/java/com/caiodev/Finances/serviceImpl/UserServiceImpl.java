@@ -46,4 +46,9 @@ public class UserServiceImpl implements UserService {
             throw new BusinessRuleException("Já existe um usuário cadastrado com este email.");
         }
     }
+
+    @Override
+    public Optional<User> obterPorId(Long id) {
+        return repository.findById(id);
+    }
 }

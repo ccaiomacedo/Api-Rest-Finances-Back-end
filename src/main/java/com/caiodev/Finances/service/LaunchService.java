@@ -4,6 +4,7 @@ import com.caiodev.Finances.entity.Launch;
 import com.caiodev.Finances.enums.LaunchStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LaunchService {
 
@@ -18,4 +19,6 @@ public interface LaunchService {
     void atualizarStatus(Launch lancamento, LaunchStatus status);
 
     void validar(Launch lancamento);
+
+    Optional<Launch> obterPorId(Long id);
 }
