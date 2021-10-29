@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/lancamentos")
+@RequestMapping("/api/lancamentos")
 public class LaunchResource {
 
     private LaunchService service;
@@ -33,12 +33,14 @@ public class LaunchResource {
             @RequestParam(value = "descricao", required = false) String descricao, // definindo que o parâmetro é opcional
             @RequestParam(value = "mes", required = false) Integer mes,
             @RequestParam(value = "ano", required = false) Integer ano,
+            @RequestParam(value = "tipo", required = false) String tipo,
             @RequestParam("usuario") Long idUsuario //parâmetro obrigatório
     ) {
         Launch lancamentoFiltro = new Launch();
         lancamentoFiltro.setDescricao(descricao);
         lancamentoFiltro.setMes(mes);
         lancamentoFiltro.setAno(ano);
+        lancamentoFiltro.setTipo(LaunchType.valueOf(tipo));
 
         Optional<User> user = usuarioService.obterPorId(idUsuario);
         if (!user.isPresent()) {

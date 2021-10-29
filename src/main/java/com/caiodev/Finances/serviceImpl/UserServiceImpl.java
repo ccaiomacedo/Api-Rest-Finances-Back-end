@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Service //diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
+@Service
+//diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
 public class UserServiceImpl implements UserService {
 
     //teste
@@ -22,11 +23,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User autenticar(String email, String senha) {
-        Optional<User> user=repository.findByEmail(email);
-        if(!user.isPresent()){
+        Optional<User> user = repository.findByEmail(email);
+        if (!user.isPresent()) {
             throw new AuthenticationErrorException("Usuário não encontrado para o email informado.");
         }
-        if(!user.get().getSenha().equals(senha)){
+        if (!user.get().getSenha().equals(senha)) {
             throw new AuthenticationErrorException("senha inválida");
         }
         return user.get();
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void validarEmail(String email) {
         boolean existe = repository.existsByEmail(email);
-        if(existe){
+        if (existe) {
             throw new BusinessRuleException("Já existe um usuário cadastrado com este email.");
         }
     }
