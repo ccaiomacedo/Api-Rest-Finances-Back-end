@@ -33,14 +33,12 @@ public class LaunchResource {
             @RequestParam(value = "descricao", required = false) String descricao, // definindo que o parâmetro é opcional
             @RequestParam(value = "mes", required = false) Integer mes,
             @RequestParam(value = "ano", required = false) Integer ano,
-            @RequestParam(value = "tipo", required = false) String tipo,
             @RequestParam("usuario") Long idUsuario //parâmetro obrigatório
     ) {
         Launch lancamentoFiltro = new Launch();
         lancamentoFiltro.setDescricao(descricao);
         lancamentoFiltro.setMes(mes);
         lancamentoFiltro.setAno(ano);
-        lancamentoFiltro.setTipo(LaunchType.valueOf(tipo));
 
         Optional<User> user = usuarioService.obterPorId(idUsuario);
         if (!user.isPresent()) {
@@ -78,20 +76,20 @@ public class LaunchResource {
     }
 
     @PutMapping("/{id}/atualiza-status")
-    public ResponseEntity atualizarStatus(@PathVariable Long id,@RequestBody UpdateStatusDTO dto){
-        return service.obterPorId(id).map(entity ->{
+    public ResponseEntity atualizarStatus(@PathVariable Long id, @RequestBody UpdateStatusDTO dto) {
+        return service.obterPorId(id).map(entity -> {
             LaunchStatus statusSelecionado = LaunchStatus.valueOf(dto.getStatus());
-            if(statusSelecionado==null){
+            if (statusSelecionado == null) {
                 return ResponseEntity.badRequest().body("Não foi possível atualizar o status do lançamento");
             }
-            try{
+            try {
                 entity.setStatus(statusSelecionado);
                 service.atualizar(entity);
                 return ResponseEntity.ok(entity);
-            }catch(BusinessRuleException e){
+            } catch (BusinessRuleException e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
-        }).orElseGet(()-> new ResponseEntity("Lançamento não encontrado na base de dados",HttpStatus.BAD_REQUEST));
+        }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado na base de dados", HttpStatus.BAD_REQUEST));
     }
 
     @DeleteMapping("/{id}")
@@ -114,10 +112,10 @@ public class LaunchResource {
         User user = usuarioService.obterPorId(dto.getUsuario()).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado para o id informado"));
 
         launch.setUser(user);
-        if (dto.getTipo()!=null) {
+        if (dto.getTipo() != null) {
             launch.setTipo(LaunchType.valueOf(dto.getTipo()));
         }
-        if (dto.getStatus()!=null) {
+        if (dto.getStatus() != null) {
             launch.setStatus(LaunchStatus.valueOf(dto.getStatus()));
         }
         return launch;

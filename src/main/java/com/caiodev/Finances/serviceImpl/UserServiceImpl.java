@@ -5,20 +5,23 @@ import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.UserRepository;
 import com.caiodev.Finances.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Service
-//diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
+@Service//diz que é uma classe de serviço para eu poder utilizar a instância em outras classes, e pode injetar as dependências
 public class UserServiceImpl implements UserService {
 
     //teste
     private UserRepository repository;
+    private PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder encoder) {
         this.repository = repository;
+        this.encoder = encoder;
+
     }
 
     @Override
@@ -27,7 +30,8 @@ public class UserServiceImpl implements UserService {
         if (!user.isPresent()) {
             throw new AuthenticationErrorException("Usuário não encontrado para o email informado.");
         }
-        if (!user.get().getSenha().equals(senha)) {
+        boolean senhasBatem = encoder.matches(senha, user.get().getSenha());
+        if (!senhasBatem) {
             throw new AuthenticationErrorException("senha inválida");
         }
         return user.get();
@@ -37,7 +41,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User salvarUsuario(User usuario) {
         validarEmail(usuario.getEmail());
+        CriptografarSenha(usuario);
         return repository.save(usuario);
+    }
+
+    private void CriptografarSenha(User usuario) {
+        String senha = usuario.getSenha();
+        String senhaCripto = encoder.encode(senha);
+        usuario.setSenha(senhaCripto);
     }
 
     @Override
