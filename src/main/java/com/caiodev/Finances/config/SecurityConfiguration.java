@@ -1,10 +1,12 @@
 package com.caiodev.Finances.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -17,6 +19,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return encoder;
     }
 
+    //esse metodo está criando uma autenticação em memoria com esses dados
     @Override
     protected  void configure(AuthenticationManagerBuilder auth) throws Exception{
         String senhaCodificada = passwordEncoder().encode("qwe123");
@@ -29,8 +32,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected  void configure(HttpSecurity http) throws  Exception{
-        http.csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()//aqui ta dizendo que pra mandar qualquer requisição tem que estar autenticado
+        http.csrf().disable()//está desabilitando a proteção de ataque csrf, o ataque é baseado no armazenamento da autenticação e sessão, só que n vai ser usado sessão
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/usuarios/autenticar").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/usuarios").permitAll()
+                .anyRequest().authenticated()//aqui ta dizendo que pra mandar qualquer requisição tem que estar autenticado
+                .and()//quando eu quiser voltar pro metodo http eu uso o and
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//pra toda requisição vai precisar de autenticação
                 .and()
                 .httpBasic();
     }
