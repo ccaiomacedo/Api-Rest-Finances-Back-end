@@ -1,7 +1,7 @@
 package com.caiodev.Finances.resource;
 
 import com.caiodev.Finances.dto.UserDTO;
-import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.entity.UserR;
 import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.service.LaunchService;
@@ -28,7 +28,7 @@ public class UserResource {
     @PostMapping("/autenticar")
     public ResponseEntity autenticar(@RequestBody UserDTO dto){
         try{
-            User usuarioAutenticado = service.autenticar(dto.getEmail(), dto.getSenha());
+            UserR usuarioAutenticado = service.autenticar(dto.getEmail(), dto.getSenha());
             return ResponseEntity.ok(usuarioAutenticado);//esse ok é pra dizer que o retorno http vai ser 200
         }catch(AuthenticationErrorException e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -37,9 +37,9 @@ public class UserResource {
 
     @PostMapping
     public ResponseEntity salvar(@RequestBody UserDTO dto) {//esse request faz o objeto json ser convertido para o java
-        User user = User.builder().nome(dto.getNome()).email(dto.getEmail()).senha(dto.getSenha()).build();
+        UserR user = UserR.builder().nome(dto.getNome()).email(dto.getEmail()).senha(dto.getSenha()).build();
         try {
-            User usuarioSalvo = service.salvarUsuario(user);
+            UserR usuarioSalvo = service.salvarUsuario(user);
             return new ResponseEntity(usuarioSalvo, HttpStatus.CREATED);
         } catch (BusinessRuleException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,7 +47,7 @@ public class UserResource {
     }
     @GetMapping("/{id}/saldo")
     public ResponseEntity obterSaldo(@PathVariable("id") Long id){
-        Optional<User> usuario = service.obterPorId(id);
+        Optional<UserR> usuario = service.obterPorId(id);
         if(!usuario.isPresent()){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }

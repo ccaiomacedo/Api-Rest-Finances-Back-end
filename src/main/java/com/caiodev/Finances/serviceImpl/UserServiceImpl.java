@@ -1,6 +1,6 @@
 package com.caiodev.Finances.serviceImpl;
 
-import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.entity.UserR;
 import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.UserRepository;
@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User autenticar(String email, String senha) {
-        Optional<User> user = repository.findByEmail(email);
+    public UserR autenticar(String email, String senha) {
+        Optional<UserR> user = repository.findByEmail(email);
         if (!user.isPresent()) {
             throw new AuthenticationErrorException("Usuário não encontrado para o email informado.");
         }
@@ -39,13 +39,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User salvarUsuario(User usuario) {
+    public UserR salvarUsuario(UserR usuario) {
         validarEmail(usuario.getEmail());
         CriptografarSenha(usuario);
         return repository.save(usuario);
     }
 
-    private void CriptografarSenha(User usuario) {
+    private void CriptografarSenha(UserR usuario) {
         String senha = usuario.getSenha();
         String senhaCripto = encoder.encode(senha);
         usuario.setSenha(senhaCripto);
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> obterPorId(Long id) {
+    public Optional<UserR> obterPorId(Long id) {
         return repository.findById(id);
     }
 }

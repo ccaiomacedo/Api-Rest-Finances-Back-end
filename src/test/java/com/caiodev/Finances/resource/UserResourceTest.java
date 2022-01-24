@@ -1,7 +1,7 @@
 package com.caiodev.Finances.resource;
 
 import com.caiodev.Finances.dto.UserDTO;
-import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.entity.UserR;
 import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.service.LaunchService;
@@ -48,7 +48,7 @@ public class UserResourceTest {
         String senha = "123";
 
         UserDTO dto = UserDTO.builder().email(email).senha(senha).build();
-        User usuario = User.builder().id(1L).email(email).senha(senha).build();
+        UserR usuario = UserR.builder().id(1L).email(email).senha(senha).build();
 
         Mockito.when(service.autenticar(email,senha)).thenReturn(usuario);
 
@@ -97,9 +97,9 @@ public class UserResourceTest {
         String senha = "123";
 
         UserDTO dto = UserDTO.builder().email(email).senha(senha).build();
-        User usuario = User.builder().id(1L).email(email).senha(senha).build();
+        UserR usuario = UserR.builder().id(1L).email(email).senha(senha).build();
 
-        Mockito.when(service.salvarUsuario(Mockito.any(User.class))).thenReturn(usuario);
+        Mockito.when(service.salvarUsuario(Mockito.any(UserR.class))).thenReturn(usuario);
         String json = new ObjectMapper().writeValueAsString(dto);//pega um objeto de qualquer tipo e transforma em uma string json
 
         //execução e verificação
@@ -123,7 +123,7 @@ public class UserResourceTest {
 
         UserDTO dto = UserDTO.builder().email(email).senha(senha).build();
 
-        Mockito.when(service.salvarUsuario(Mockito.any(User.class))).thenThrow(BusinessRuleException.class);
+        Mockito.when(service.salvarUsuario(Mockito.any(UserR.class))).thenThrow(BusinessRuleException.class);
         String json = new ObjectMapper().writeValueAsString(dto);//pega um objeto de qualquer tipo e transforma em uma string json
 
         //execução e verificação

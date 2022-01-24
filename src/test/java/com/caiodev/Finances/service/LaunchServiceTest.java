@@ -1,7 +1,7 @@
 package com.caiodev.Finances.service;
 
 import com.caiodev.Finances.entity.Launch;
-import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.entity.UserR;
 import com.caiodev.Finances.enums.LaunchStatus;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.LaunchRepository;
@@ -231,7 +231,7 @@ public class LaunchServiceTest {
         erro = Assertions.catchThrowable(()->service.validar(launch));
         Assertions.assertThat(erro).isInstanceOf(BusinessRuleException.class).hasMessage("Informe um usuário");
 
-        launch.setUser(new User());
+        launch.setUser(new UserR());
 
         erro = Assertions.catchThrowable(()->service.validar(launch));
         Assertions.assertThat(erro).isInstanceOf(BusinessRuleException.class).hasMessage("Informe um usuário");

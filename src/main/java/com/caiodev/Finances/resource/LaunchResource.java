@@ -3,7 +3,7 @@ package com.caiodev.Finances.resource;
 import com.caiodev.Finances.dto.LaunchDTO;
 import com.caiodev.Finances.dto.UpdateStatusDTO;
 import com.caiodev.Finances.entity.Launch;
-import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.entity.UserR;
 import com.caiodev.Finances.enums.LaunchStatus;
 import com.caiodev.Finances.enums.LaunchType;
 import com.caiodev.Finances.exception.BusinessRuleException;
@@ -40,7 +40,7 @@ public class LaunchResource {
         lancamentoFiltro.setMes(mes);
         lancamentoFiltro.setAno(ano);
 
-        Optional<User> user = usuarioService.obterPorId(idUsuario);
+        Optional<UserR> user = usuarioService.obterPorId(idUsuario);
         if (!user.isPresent()) {
             return ResponseEntity.badRequest().body("Não foi possível realizar a consulta. Usuário não encontrado para o id encontrado");
         } else {
@@ -109,9 +109,9 @@ public class LaunchResource {
         launch.setMes(dto.getMes());
         launch.setValor(dto.getValor());
 
-        User user = usuarioService.obterPorId(dto.getUsuario()).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado para o id informado"));
+        UserR userR = usuarioService.obterPorId(dto.getUsuario()).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado para o id informado"));
 
-        launch.setUser(user);
+        launch.setUser(userR);
         if (dto.getTipo() != null) {
             launch.setTipo(LaunchType.valueOf(dto.getTipo()));
         }

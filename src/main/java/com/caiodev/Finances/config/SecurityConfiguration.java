@@ -24,12 +24,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return encoder;
     }
 
-    //esse metodo está criando uma autenticação em memoria com esses dados
+    //esse metodo estava criando uma autenticação em memoria com esses dados
     @Override
     protected  void configure(AuthenticationManagerBuilder auth) throws Exception{
-        String senhaCodificada = passwordEncoder().encode("qwe123");
-
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(userDetailsService) //aqui ta passando o tipo de autenticação
                 .passwordEncoder(passwordEncoder());
 
     }

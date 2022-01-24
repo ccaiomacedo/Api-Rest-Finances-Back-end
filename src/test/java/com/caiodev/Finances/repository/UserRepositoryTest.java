@@ -1,6 +1,6 @@
 package com.caiodev.Finances.repository;
 
-import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.entity.UserR;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ public class UserRepositoryTest {
     @Test
     public void deveVerificarAExistenciaDeUmEmail(){
         //cenário
-        User user = criarUsuario();
+        UserR user = criarUsuario();
         entityManager.persist(user); //está salvando um usuário
 
         //ação/execução
@@ -53,10 +53,10 @@ public class UserRepositoryTest {
     @Test
     public void devePersistirUmUsuarioNaBaseDeDados(){
         //cenário
-        User user = criarUsuario();
+        UserR user = criarUsuario();
 
         //ação
-        User usuarioSalvo = repository.save(user);
+        UserR usuarioSalvo = repository.save(user);
 
         //Verificação
         Assertions.assertThat(usuarioSalvo.getId()).isNotNull();
@@ -64,11 +64,11 @@ public class UserRepositoryTest {
     @Test
     public void deveBuscarUmUsuarioPorEmail(){
         //cenário
-        User user = criarUsuario();
+        UserR user = criarUsuario();
         entityManager.persist(user);
 
         //ação
-        Optional<User> result = repository.findByEmail("usuario@email.com");
+        Optional<UserR> result = repository.findByEmail("usuario@email.com");
 
         //Verificação
         Assertions.assertThat(result.isPresent()).isTrue();
@@ -80,7 +80,7 @@ public class UserRepositoryTest {
         //cenário
 
         //ação
-        Optional<User> result = repository.findByEmail("usuario@email.com");
+        Optional<UserR> result = repository.findByEmail("usuario@email.com");
 
         //Verificação
         Assertions.assertThat(result.isPresent()).isFalse();
@@ -88,7 +88,7 @@ public class UserRepositoryTest {
 
     }
 
-    public static  User criarUsuario(){
-        return User.builder().nome("usuario").email("usuario@email.com").senha("senha").build();
+    public static UserR criarUsuario(){
+        return UserR.builder().nome("usuario").email("usuario@email.com").senha("senha").build();
     }
 }

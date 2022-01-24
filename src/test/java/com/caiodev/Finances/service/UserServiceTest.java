@@ -1,7 +1,7 @@
 package com.caiodev.Finances.service;
 
 
-import com.caiodev.Finances.entity.User;
+import com.caiodev.Finances.entity.UserR;
 import com.caiodev.Finances.exception.AuthenticationErrorException;
 import com.caiodev.Finances.exception.BusinessRuleException;
 import com.caiodev.Finances.repository.UserRepository;
@@ -38,11 +38,11 @@ public class UserServiceTest {
     public void deveSalvarUmUsuario(){
         //cenário
         Mockito.doNothing().when(service).validarEmail(Mockito.anyString());//ele n vai fazer nd quando eu chamar um método de validar email
-        User user = User.builder().id(1L).nome("nome").email("email@email.com").senha("senha").build();
-        Mockito.when(repository.save(Mockito.any(User.class))).thenReturn(user);//quando eu chamar o método de salvar usuário passando qualquer usuário ele vai me retornar um usuário
+        UserR user = UserR.builder().id(1L).nome("nome").email("email@email.com").senha("senha").build();
+        Mockito.when(repository.save(Mockito.any(UserR.class))).thenReturn(user);//quando eu chamar o método de salvar usuário passando qualquer usuário ele vai me retornar um usuário
 
         //ação
-        User usuarioSalvo = service.salvarUsuario(new User());
+        UserR usuarioSalvo = service.salvarUsuario(new UserR());
 
         //verificação
         Assertions.assertThat(usuarioSalvo).isNotNull();
@@ -58,7 +58,7 @@ public class UserServiceTest {
     public void naoDeveSalvarUmUsuarioComEmailJaCadastrado(){
         //cenário
         String email ="email@email.com";
-        User user = User.builder().email(email).build();
+        UserR user = UserR.builder().email(email).build();
         Mockito.doThrow(BusinessRuleException.class).when(service).validarEmail(email);//está lançando a exception quando executa esse método passando o email
 
         //ação
@@ -77,11 +77,11 @@ public class UserServiceTest {
         String senha = "senha";
 
         //quando eu mocko um objeto, preciso informar o retorno, pq se não ele retorna default
-        User user = User.builder().email(email).senha(senha).id(1L).build();
+        UserR user = UserR.builder().email(email).senha(senha).id(1L).build();
         Mockito.when(repository.findByEmail(email)).thenReturn(Optional.of(user));//quando executar o findByEmail passando o email vai retornar o optional passando um user
 
         //ação
-        User result = service.autenticar(email,senha);
+        UserR result = service.autenticar(email,senha);
 
         //verificação
         Assertions.assertThat(result).isNotNull();
@@ -102,7 +102,7 @@ public class UserServiceTest {
     public void deveLancarErroQuandoSenhaNaoBater(){
         //cenário
         String senha = "senha";
-        User user = User.builder().email("@email@email.com").senha(senha).build();
+        UserR user = UserR.builder().email("@email@email.com").senha(senha).build();
         Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(user));
         //ação
         Throwable exception = Assertions.catchThrowable( () -> service.autenticar("@email@email.com","123"));//este throwable está capturando o erro que vai ser lançado nesse método

@@ -35,7 +35,7 @@ public class Launch {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")//join é pra dizer que é uma coluna de relacionamento
-    private User user;
+    private UserR user;
 
     @Column(name = "valor")
     private BigDecimal valor;
